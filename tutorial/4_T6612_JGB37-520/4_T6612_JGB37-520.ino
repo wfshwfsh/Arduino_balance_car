@@ -1,5 +1,5 @@
 /*
-	Get All MPU6050 IMU data
+	Control JGB37-520 motors by T6612 controller
 */
 
 #include <Wire.h>
