@@ -1,7 +1,14 @@
+#define SEC_2MS(s) (s*1000)
 /*
- * OCR2A = (0.01 * 16000000)/64 - 1 = 249 
- * => 1 intr per 10ms(0.01sec)
+ * OCR2A = (0.001 * 16000000)/64 - 1 = 249 
+ * => 1 intr per 1ms(0.001sec)
  */
+
+int calc_clk(long clk, float prescalar, float ocr2a)
+{
+  float intr_dt_sec = prescalar*(ocr2a+1)/clk;
+  return SEC_2MS(intr_dt_sec);
+}
 
 // the setup function runs once when you press reset or power the board
 void timer_isr_setup() {
