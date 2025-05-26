@@ -4,11 +4,12 @@
 /* 5MS 處理一次平衡... */
 #define DT_INTR_CNT5 5
 #define PWM_Lim 350
-#define Mechanical_Median (0.51)
+#define Mechanical_Median (1.68)
+#define Z_Static_Deviation (0.8)
 
 volatile int timer2IsrCounter = 0;
 extern int16_t ax, ay, az, gx, gy, gz;
-extern float curAngle;
+extern float pitch, yaw;
 volatile int dt_intr_ms;
 
 extern float PWM_Up, PWM_Speed, PWM_Steering;
@@ -40,13 +41,13 @@ ISR(TIMER2_COMPA_vect) {
 
   // 2. PID_UP
   //PWM_Upright = PID_Upright(Mechanical_Median, pitch, gyro_y);
-  PWM_Upright = -PID_Upright(Mechanical_Median, curAngle, gy);
+  PWM_Upright = -PID_Upright(Mechanical_Median, pitch, gy);
 
   // 3. PID_Speed
   PWM_Speed = -PID_Speed(0, Speed);
 
   // 4. PID_Steering
-  //PWM_Steering = -PID_Steering(10, yaw, gyro_z + Z_Static_Deviation);
+  PWM_Steering = -PID_Steering(0, yaw, gz + Z_Static_Deviation);
 
   // Adding balance PWM_Deviation
   PWM_Deviation = -28;
@@ -108,19 +109,6 @@ void loop() {
   //show_mpu6050_raw_data();
   angle_calculate();
   //show_angle();
-
-  // Controll motors
-  //setMotorSpeed(/*Left*/100,/*Right*/100);
-  //delay(3000); 
-
-  //setMotorSpeed(/*Left*/0,/*Right*/0);
-  //delay(1000);
-
-  //setMotorSpeed(/*Left*/-100,/*Right*/-100);
-  //delay(3000);
-
-  //setMotorSpeed(/*Left*/0,/*Right*/0);
-  //delay(2000);
 
   delay(dt_intr_ms);
 }

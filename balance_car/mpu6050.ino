@@ -5,7 +5,8 @@
 MPU6050 mpu;
 int16_t ax, ay, az, _gx, _gy, _gz;
 int16_t gx, gy, gz;
-float curAngle=0;
+//float curAngle=0;
+float pitch=0, yaw=0;
 float angleOffset=0;
 extern volatile int dt_intr_ms;
 
@@ -35,11 +36,14 @@ void angle_calculate()
 {
   float accAngle = -atan2(ax, az) * 180 / PI - angleOffset;
   gy = _gy / 131.0;
+  gz = _gz / 131.0;
 
-  curAngle = FUSION_RATE_ANGLE * (curAngle + gy * dt_intr_ms/1000) + (1-FUSION_RATE_ANGLE) * accAngle;
+  pitch = FUSION_RATE_ANGLE * (pitch + gy * dt_intr_ms/1000.0) + (1-FUSION_RATE_ANGLE) * accAngle;
+  yaw += gz * dt_intr_ms / 1000.0;
 }
 
 void show_angle()
 {
-  Serial.print("curAngle="); Serial.println(curAngle);
+  Serial.print("pitch="); Serial.print(pitch);
+  Serial.print(" | yaw="); Serial.println(pitch);
 }

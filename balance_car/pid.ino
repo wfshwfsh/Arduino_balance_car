@@ -3,12 +3,12 @@ float PID_Upright_Kp = 36.5*0.6;//50*0.6;
 float PID_Upright_Kd = 1.412*0.6;
 
 //速度环
-float PID_Speed_Kp = 3.23;//0.53;
+float PID_Speed_Kp = 10;//3.23;
 float PID_Speed_Ki = (PID_Speed_Kp/200);//(0.53/200);
 
 //转向环
 float PID_Steering_Kp = 0;
-float PID_Steering_Kd = 5;
+float PID_Steering_Kd = 1.8;
 
 float PWM_Up=0, PWM_Speed=0, PWM_Steering=0;
 int Speed_Integral=0, Speed_Err_Last=0;
